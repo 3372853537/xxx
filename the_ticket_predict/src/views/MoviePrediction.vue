@@ -46,6 +46,14 @@
                 </option>
               </select>
             </div>
+            <!-- 添加 flag 选择 -->
+            <div class="form-group">
+              <label>是否为新电影</label>
+              <select v-model="flagValue">
+                <option :value="true">是</option>
+                <option :value="false">否</option>
+              </select>
+            </div>
             <button class="predict-btn" @click="predict" :disabled="!selectedMovie">
               开始预测
             </button>
@@ -59,7 +67,7 @@
                 <input type="text" v-model="newMovie.name">
               </div>
               <div class="form-group">
-                <label>预算 (万元)</label>
+                <label>预算 </label>
                 <input type="number" v-model="newMovie.budget">
               </div>
               <div class="form-group">
@@ -131,6 +139,19 @@
           <div v-if="predictionImage && predictionType === 'released'" class="prediction-result">
             <h4>预测结果</h4>
             <img :src="predictionImage" alt="票房预测图" class="prediction-chart">
+            <div class="axis-explanation">
+              <h5>图表说明</h5>
+              <ul>
+                <li><strong>横轴（X轴）：</strong>表示电影上映后的天数</li>
+                <li><strong>纵轴（Y轴）：</strong>表示日票房收入（单位：元）</li>
+                <li><strong>蓝色曲线：</strong>实际票房数据</li>
+                <li><strong>红色曲线：</strong>预测票房走势</li>
+              </ul>
+            </div>
+            <div v-if="predictionExplanation" class="prediction-explanation">
+              <h5>预测结果分析</h5>
+              <p>{{ predictionExplanation }}</p>
+            </div>
           </div>
 
           <!-- 未上映电影预测结果 -->
@@ -194,7 +215,9 @@ export default {
       moviePoster: null,    // 存储电影海报
       showResults: false,    // 添加这行
       showWeightImage: false,
-      weightImageUrl: '/path/to/weight/image.png' // 替换为实际的权重图路径
+      weightImageUrl: '/path/to/weight/image.png', // 替换为实际的权重图路径
+      flagValue: true,  // 添加 flag 数据
+      predictionExplanation: null
     };
   },
   mounted() {
@@ -235,7 +258,7 @@ export default {
         const response = await axios.post('http://127.0.0.1:5000/predict', {
           name: this.selectedMovie,
           step: this.predictionDays,
-          flag: false
+          flag: this.flagValue  // 修改这里，传递 flag 值
         }, {
           responseType: 'blob'
         });
@@ -243,6 +266,13 @@ export default {
         // 创建图片URL
         const imageUrl = URL.createObjectURL(response.data);
         this.predictionImage = imageUrl;
+        
+        // 获取预测解释
+        const explanation = response.headers['prediction-explanation'];
+        if (explanation) {
+          this.predictionExplanation = this.b64DecodeUnicode(explanation);
+        }
+        
         this.showResults = true;  // 添加这行
       } catch (error) {
         console.error('预测失败:', error.response || error);
@@ -801,5 +831,57 @@ export default {
 .type-btn,
 .weight-btn {
   display: none;
+}
+
+.prediction-explanation {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.prediction-explanation h5 {
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.prediction-explanation p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.axis-explanation {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  border-left: 4px solid #ff5733;
+}
+
+.axis-explanation h5 {
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.axis-explanation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.axis-explanation li {
+  margin-bottom: 8px;
+  color: #666;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.axis-explanation li strong {
+  color: #333;
+  margin-right: 4px;
 }
 </style>
