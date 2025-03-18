@@ -14,7 +14,9 @@
     <div class="news-section">
       <h2 class="section-title">今日资讯</h2>
       <div class="news-grid">
-        <div v-for="news in newsItems" :key="news.id" class="news-item">
+        <div v-for="news in newsItems" 
+          :key="news.id" 
+          class="news-item">
           <img :src="news.imageUrl" :alt="news.title">
           <div class="news-content">
             <h3>{{ news.title }}</h3>
@@ -29,7 +31,11 @@
     <div class="daily-movies-section">
       <h2 class="section-title">每日佳片</h2>
       <div class="movies-grid">
-        <div v-for="movie in dailyMovies" :key="movie.id" class="movie-card">
+        <div v-for="movie in dailyMovies" 
+          :key="movie.id" 
+          class="movie-card"
+          @click="goToMovieDetail(movie.title)"
+          style="cursor: pointer;">
           <img :src="getPoster(movie.poster)" :alt="movie.title">
           <h3>{{ movie.title }}</h3>
           <div class="movie-rating">评分：{{ movie.score }}</div>
@@ -54,11 +60,6 @@ export default {
   data() {
     return {
       carouselItems: [
-        { 
-          id: 1, 
-          imageUrl:'https://img5.mtime.cn/mg/2025/03/12/103252.75428708.jpg', 
-        //   title: '用银幕的光影照亮希望' 
-        },
         { 
           id: 2, 
           imageUrl:'https://img5.mtime.cn/mg/2025/02/27/174257.13583407.jpg', 
@@ -88,16 +89,16 @@ export default {
       newsItems: [
         {
           id: 1,
-          imageUrl:require('../assets/will/10.jpg'),
-          title: '《奥本海默》口碑爆棚',
-          summary: '诺兰新作口碑创新高，烂番茄新鲜度94%',
+          imageUrl:require('../assets/now/9.jpg'),
+          title: '《哪吒之魔童闹海》口碑爆棚',
+          summary: '哪吒之魔童闹海冲击全球票房，是魔是仙我自己说了才算',
           time: '2023-07-21'
         },
         {
           id: 2,
-          imageUrl:require('../assets/will/10.jpg'),
-          title: '《封神第一部》上映',
-          summary: '暑期档最受期待大片终于来袭',
+          imageUrl:require('../assets/will/9.jpg'),
+          title: '《倩女幽魂》重映',
+          summary: '盼了好久，《倩女幽魂》终于要重映了，怪不得聂小倩的眼神如何摄人心魄',
           time: '2023-07-22'
         }
       ],
@@ -124,6 +125,12 @@ export default {
       } catch (error) {
         console.error('Error fetching carousel items:', error);
       }
+    },
+    goToMovieDetail(title) {
+      this.$router.push({
+        name: 'MovieDetail',
+        params: { title: title }
+      });
     }
   }
 }
@@ -175,6 +182,11 @@ export default {
   padding: 15px;
   border: 1px solid #eee;
   border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.news-item:hover {
+  transform: translateY(-5px);
 }
 
 .news-item img {
@@ -202,6 +214,12 @@ export default {
 
 .movie-card {
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
 }
 
 .movie-card img {
