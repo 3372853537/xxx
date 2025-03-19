@@ -144,8 +144,8 @@
               <ul>
                 <li><strong>横轴（X轴）：</strong>表示电影上映后的天数</li>
                 <li><strong>纵轴（Y轴）：</strong>表示日票房收入（单位：元）</li>
-                <li><strong>蓝色曲线：</strong>实际票房数据</li>
-                <li><strong>红色曲线：</strong>预测票房走势</li>
+                <li><strong>蓝色曲线：</strong>预测票房走势</li>
+                <li><strong>红色曲线：</strong>实际票房数据</li>
               </ul>
             </div>
             <div v-if="predictionExplanation" class="prediction-explanation">

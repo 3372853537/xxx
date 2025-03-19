@@ -27,7 +27,7 @@
           </h2>
         </div>
       </header>
-      <nav class="profile-nav">
+      <!-- <nav class="profile-nav">
         <ul>
           <li><a href="#">动态</a></li>
           <li><a href="#">影评</a></li>
@@ -35,7 +35,7 @@
           <li><a href="#">关注</a></li>
           <li><a href="#">粉丝</a></li>
         </ul>
-      </nav>
+      </nav> -->
       <section class="profile-info">
         <div v-if="!isEditing">
           <ul>

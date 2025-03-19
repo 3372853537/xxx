@@ -6,7 +6,6 @@ import MoviePrediction from "@/views/MoviePrediction.vue";
 import UserLogin from "@/views/UserLogin.vue";
 import UserDetail from "@/views/UserDetail.vue";
 import MovieDetail from "@/views/MovieDetail.vue";
-import RawPrection from "@/views/RawPrection.vue";
 import MovieBoxOffice from "@/views/MovieBoxOffice.vue";
 import MovieNews from "@/views/MovieNews.vue";
 import AdminMovieSystem from "@/views/AdminMovieSystem.vue";
@@ -50,14 +49,6 @@ const routes = [
     path: "/movie-detail/:title",
     name: "MovieDetail",
     component: MovieDetail,
-    meta: {
-      showNavbar: true
-    }
-  },
-  {
-    path: "/raw-prediction",
-    name: "RawPrection",
-    component: RawPrection,
     meta: {
       showNavbar: true
     }
